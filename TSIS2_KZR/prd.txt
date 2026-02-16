@@ -1,0 +1,3 @@
+Write a Python function to parse a CSV file.
+It must handle FileNotFoundError.
+It must return a list of dictionaries.
