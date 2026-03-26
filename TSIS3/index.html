@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CFO Bot — Cloud Economics Calculator | TSIS 3</title>
+  <meta name="description" content="Estimate your monthly GCP cloud costs for a ChatBot application. Calculate Compute, Storage, Bandwidth, Database and AI Model expenses in real-time." />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- ── HEADER ─────────────────────────────────────────── -->
+  <header>
+    <div class="header-badge">TSIS 3 &nbsp;·&nbsp; Cloud Economics</div>
+    <h1>CFO Bot</h1>
+    <p class="header-sub">
+      Estimate your monthly GCP cloud costs for a ChatBot application.<br>
+      Adjust the parameters below — costs update in real-time.
+    </p>
+  </header>
+
+  <!-- ── MAIN CONTENT ───────────────────────────────────── -->
+  <div class="container">
+
+    <!-- Stats Pills -->
+    <div class="stats-row">
+      <div class="stat-pill">
+        <span class="label">Monthly Requests</span>
+        <span class="value" id="stat-requests">—</span>
+      </div>
+      <div class="stat-pill">
+        <span class="label">Active Users</span>
+        <span class="value" id="stat-mau">—</span>
+      </div>
+      <div class="stat-pill">
+        <span class="label">AI Model</span>
+        <span class="value" id="stat-model">—</span>
+      </div>
+    </div>
+
+    <!-- Main 2-column grid -->
+    <div class="main-grid">
+
+      <!-- LEFT — Input Controls -->
+      <div class="card">
+        <div class="card-title">Usage Parameters</div>
+
+        <!-- MAU Slider -->
+        <div class="input-group">
+          <div class="input-label">
+            <span>Monthly Active Users (MAU)</span>
+            <span class="val" id="mau-val">1,000</span>
+          </div>
+          <input
+            type="range"
+            id="mau"
+            min="0" max="100000" step="500"
+            value="1000"
+            aria-label="Monthly Active Users"
+          />
+        </div>
+
+        <!-- Messages/Day Slider -->
+        <div class="input-group">
+          <div class="input-label">
+            <span>Messages per User per Day</span>
+            <span class="val" id="msgs-val">10</span>
+          </div>
+          <input
+            type="range"
+            id="msgs"
+            min="1" max="100" step="1"
+            value="10"
+            aria-label="Messages per User per Day"
+          />
+        </div>
+
+        <!-- Storage Slider -->
+        <div class="input-group">
+          <div class="input-label">
+            <span>Storage (GB)</span>
+            <span class="val" id="storage-val">50</span>
+          </div>
+          <input
+            type="range"
+            id="storage"
+            min="1" max="5000" step="10"
+            value="50"
+            aria-label="Storage in GB"
+          />
+        </div>
+
+        <!-- AI Model Select -->
+        <div class="input-group">
+          <div class="input-label">
+            <span>AI Model Tier</span>
+          </div>
+          <div class="select-wrapper">
+            <select id="model" aria-label="AI Model Tier">
+              <option value="flash">⚡ Gemini Flash — $0.075 / 1M tokens</option>
+              <option value="pro">🧠 Gemini Pro — $3.50 / 1M tokens</option>
+              <option value="ultra">🚀 Gemini Ultra — $30.00 / 1M tokens</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- RIGHT — Cost Breakdown -->
+      <div class="card">
+        <div class="card-title">Monthly Cost Breakdown</div>
+
+        <table class="breakdown-table" aria-label="Cost breakdown by component">
+          <tbody>
+            <!-- Compute -->
+            <tr>
+              <td>
+                <div class="row-name">
+                  <div class="row-icon" style="background:rgba(99,197,245,0.12)">☁️</div>
+                  Compute
+                  <span class="row-service">Cloud Run</span>
+                </div>
+              </td>
+              <td class="row-bar-cell">
+                <div class="bar-track">
+                  <div class="bar-fill bar-compute" id="bar-compute"></div>
+                </div>
+              </td>
+              <td class="row-cost" id="cost-compute">$0.00</td>
+            </tr>
+            <!-- Storage -->
+            <tr>
+              <td>
+                <div class="row-name">
+                  <div class="row-icon" style="background:rgba(167,139,250,0.12)">🗄️</div>
+                  Storage
+                  <span class="row-service">Cloud Storage</span>
+                </div>
+              </td>
+              <td class="row-bar-cell">
+                <div class="bar-track">
+                  <div class="bar-fill bar-storage" id="bar-storage"></div>
+                </div>
+              </td>
+              <td class="row-cost" id="cost-storage">$0.00</td>
+            </tr>
+            <!-- Bandwidth -->
+            <tr>
+              <td>
+                <div class="row-name">
+                  <div class="row-icon" style="background:rgba(74,222,128,0.12)">📡</div>
+                  Bandwidth
+                  <span class="row-service">Network Egress</span>
+                </div>
+              </td>
+              <td class="row-bar-cell">
+                <div class="bar-track">
+                  <div class="bar-fill bar-bandwidth" id="bar-bandwidth"></div>
+                </div>
+              </td>
+              <td class="row-cost" id="cost-bandwidth">$0.00</td>
+            </tr>
+            <!-- Database -->
+            <tr>
+              <td>
+                <div class="row-name">
+                  <div class="row-icon" style="background:rgba(251,191,36,0.12)">🔥</div>
+                  Database
+                  <span class="row-service">Firestore</span>
+                </div>
+              </td>
+              <td class="row-bar-cell">
+                <div class="bar-track">
+                  <div class="bar-fill bar-database" id="bar-database"></div>
+                </div>
+              </td>
+              <td class="row-cost" id="cost-database">$0.00</td>
+            </tr>
+            <!-- AI Model -->
+            <tr>
+              <td>
+                <div class="row-name">
+                  <div class="row-icon" style="background:rgba(251,146,60,0.12)">🤖</div>
+                  AI Model
+                  <span class="row-service">Gemini API</span>
+                </div>
+              </td>
+              <td class="row-bar-cell">
+                <div class="bar-track">
+                  <div class="bar-fill bar-ai" id="bar-ai"></div>
+                </div>
+              </td>
+              <td class="row-cost" id="cost-ai">$0.00</td>
+            </tr>
+          </tbody>
+
+          <!-- Total -->
+          <tfoot>
+            <tr class="total-row">
+              <td colspan="2">
+                <div class="total-label">
+                  <span>💰</span>
+                  Total Monthly Cost
+                </div>
+              </td>
+              <td class="total-cost" id="cost-total">$0.00</td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+
+      <!-- BOTTOM-LEFT — Gauge -->
+      <div class="card" style="display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center;">
+        <div class="card-title" style="justify-content:center;">Cost Gauge</div>
+
+        <div class="gauge-wrap">
+          <svg class="gauge-svg" viewBox="0 0 120 120" aria-hidden="true">
+            <defs>
+              <linearGradient id="gaugeGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%"   stop-color="#63c5f5"/>
+                <stop offset="100%" stop-color="#a78bfa"/>
+              </linearGradient>
+            </defs>
+            <circle class="gauge-bg"   cx="60" cy="60" r="54"/>
+            <circle class="gauge-ring" cx="60" cy="60" r="54"/>
+          </svg>
+
+          <div id="tier-badge" class="tier-badge green">🟢 Startup Tier</div>
+
+          <p style="margin-top:12px; font-size:0.78rem; color:var(--text-muted); max-width:200px;">
+            Gauge fills as cost approaches $50,000/month
+          </p>
+        </div>
+      </div>
+
+      <!-- BOTTOM-RIGHT — Pricing Notes -->
+      <div class="card">
+        <div class="card-title">Pricing Notes</div>
+
+        <ul style="list-style:none; display:flex; flex-direction:column; gap:14px;">
+          <li style="font-size:0.82rem; color:var(--text-secondary); display:flex; gap:10px;">
+            <span style="color:var(--accent-teal); flex-shrink:0;">☁️</span>
+            <span><strong style="color:var(--text-primary)">Cloud Run:</strong> $0.000024/vCPU-sec · 2s avg request duration</span>
+          </li>
+          <li style="font-size:0.82rem; color:var(--text-secondary); display:flex; gap:10px;">
+            <span style="color:var(--accent-violet); flex-shrink:0;">🗄️</span>
+            <span><strong style="color:var(--text-primary)">Cloud Storage:</strong> $0.020/GB-month (Standard, us-central1)</span>
+          </li>
+          <li style="font-size:0.82rem; color:var(--text-secondary); display:flex; gap:10px;">
+            <span style="color:var(--accent-green); flex-shrink:0;">📡</span>
+            <span><strong style="color:var(--text-primary)">Egress:</strong> $0.12/GB · 8 KB avg response per request</span>
+          </li>
+          <li style="font-size:0.82rem; color:var(--text-secondary); display:flex; gap:10px;">
+            <span style="color:var(--accent-yellow); flex-shrink:0;">🔥</span>
+            <span><strong style="color:var(--text-primary)">Firestore:</strong> $0.06/100k reads · $0.18/100k writes · 3R+2W per message</span>
+          </li>
+          <li style="font-size:0.82rem; color:var(--text-secondary); display:flex; gap:10px;">
+            <span style="color:var(--accent-orange); flex-shrink:0;">🤖</span>
+            <span><strong style="color:var(--text-primary)">Gemini:</strong> Flash $0.075/1M · Pro $3.50/1M · Ultra $30/1M tokens</span>
+          </li>
+          <li style="font-size:0.82rem; color:var(--text-muted); display:flex; gap:10px; padding-top:8px; border-top:1px solid var(--border);">
+            <span>ℹ️</span>
+            <span>All prices are GCP list prices. Free tier excluded for conservative estimation.</span>
+          </li>
+        </ul>
+      </div>
+
+    </div><!-- /main-grid -->
+
+    <!-- Export button -->
+    <div style="text-align:center;">
+      <button class="btn-export" id="btn-export" aria-label="Export cost report">
+        🖨️ &nbsp; Export / Print Report
+      </button>
+    </div>
+
+  </div><!-- /container -->
+
+  <!-- ── FOOTER ─────────────────────────────────────────── -->
+  <footer>
+    <p>CFO Bot · TSIS 3 Cloud Economics · Built with GCP Pricing (2024) · Deployed on Firebase Hosting</p>
+  </footer>
+
+  <script src="app.js"></script>
+
+  <!-- Update slider gradients live -->
+  <script>
+    document.querySelectorAll("input[type=range]").forEach(function(el) {
+      function updateTrack() {
+        var min = parseFloat(el.min) || 0;
+        var max = parseFloat(el.max) || 100;
+        var val = parseFloat(el.value);
+        var pct = ((val - min) / (max - min)) * 100;
+        el.style.setProperty("--pct", pct + "%");
+      }
+      el.addEventListener("input", updateTrack);
+      updateTrack();
+    });
+  </script>
+</body>
+</html>
