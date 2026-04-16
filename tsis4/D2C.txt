@@ -1,0 +1,17 @@
+Detect to Correct (D2C)
+(How to track, detect, and fix issues based exactly on the Streamlit implementation)
+1. Tracking API Costs (FinOps)
+We keep an eye on how much we spend on the Gemini API and avoid extra costs:
+Prevent duplicate requests: We use Streamlit’s caching system (@st.cache_data) for the analyze_reviews() function. Once a review is analyzed, the result is stored. If the user reloads or interacts with the app again, it shows the cached result instead of sending another request to the API. 
+Monitoring costs: The API key is stored safely in an environment variable. Admins can check usage on the Google AI Studio dashboard and revoke or replace the key if spending limits are reached. 
+2. Detecting AI Mistakes (Hallucinations)
+To make sure the AI doesn’t make up facts, we added several checks:
+Backend control: The AI is set to be less “creative” (temperature=0.2) and always return results in JSON format. This keeps answers predictable and factual. 
+Frontend verification: At the bottom of the dashboard, there’s a table called “Review Snippets”. Users can see exactly which pieces of text the AI used to generate its insights. If something in the summary doesn’t match the table, it’s easy to spot a mistake. 
+3. Handling System Errors Gracefully
+The app won’t crash if something goes wrong:
+Input checks: Before sending data to the AI, the app checks if the user provided a file. If the input is empty, it shows a warning and pauses execution. 
+Safe error messages: The Gemini API is wrapped in a try/except block. If the connection fails, instead of crashing, the app shows a friendly error message:
+❌ Core processing error. Details: [Reason]
+This lets the user understand what went wrong without needing IT support.
+

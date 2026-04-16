@@ -1,0 +1,12 @@
+Request to Fulfill (R2F)
+AI Product Review Analyzer
+Description
+The AI Product Review Analyzer operates through an intuitive, lightweight web application designed specifically to eliminate the manual burden of processing customer feedback. 
+Workflow
+SME users begin their workflow by either uploading a raw text file of reviews or directly pasting feedback into the interface, followed by establishing a customized business goal such as targeting an 80% positive sentiment ratio.
+ Upon execution, the system leverages generative AI to instantly parse, categorize, and synthesize the unstructured data, guiding the user to a gamified, interactive dashboard divided into distinctly organized tabs. This streamlined journey requires zero technical expertise; users simply input raw text and immediately receive strategic, data-driven insights. 
+Results
+The resulting outputs are explicitly engineered to empower rapid decision-making and operational growth for business leaders. The application visualizes overall brand health through dynamic, animated sentiment charts, while automatically extracting and categorizing critical feedback into color-coded tables highlighting high-priority roadblocks and core product strengths. 
+Most importantly, the tool generates business recommendations tailored specifically to help the organization bridge the gap between its current sentiment ratio and its defined target goal. To maximize everyday usability, the application features interactive data filtering for granular deep-dives, visual tooltips for frictionless navigation, and one-click CSV export functionality, enabling leaders to instantly distribute prioritized action plans directly to their product or customer success teams.
+
+

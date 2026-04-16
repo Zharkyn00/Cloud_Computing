@@ -1,0 +1,24 @@
+Strategy to Portfolio (S2P)
+AI Product Review Analyzer
+Business Problem
+Small and medium-sized businesses (SMEs), such as online shops on platforms like Kaspi or Wildberries, receive a large number of customer reviews every day.
+However, they face several challenges:
+•	They do not have enough time to read all reviews manually 
+•	It is difficult to identify common problems across many reviews 
+•	Decision-making becomes slow and inefficient due to lack of clear insights 
+As a result, valuable customer feedback is often misused, which can negatively impact product quality and customer satisfaction.
+Proposed Solution
+The AI Product Review Analyzer is an AI tool that will automatically process and analyze customer reviews.
+The system will:
+•	Analyze all reviews at once 
+•	Identify overall sentiment (positive, negative, or mixed) 
+•	Extract the most common problems mentioned by customers 
+•	Highlight key positive aspects of the product 
+•	Generate actionable business recommendations 
+Business Value
+•	Saves time by eliminating the need to manually read all reviews 
+•	Improves decision-making with structured insights 
+•	Identifies critical issues quickly, helping businesses react faster 
+•	Enhances customer satisfaction by addressing real customer concerns 
+•	Supports business growth through better product and service improvements 
+
